@@ -1,0 +1,8 @@
+{
+  "name": "claude-video",
+  "version": "0.1.0",
+  "description": "Feed local video files into Claude as visual context via ffmpeg frame extraction",
+  "author": { "name": "yanmastin" },
+  "repository": "https://github.com/yanmastin/claude-video",
+  "license": "MIT"
+}
