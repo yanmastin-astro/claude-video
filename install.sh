@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# install.sh — Register claude-video as a local Claude Code plugin
+# install.sh — Install claude-video into Claude Code
 # Usage: ./install.sh
 
 set -euo pipefail
@@ -7,7 +7,6 @@ set -euo pipefail
 PLUGIN_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="${HOME}/.claude"
 CACHE_DIR="${CLAUDE_DIR}/claude-video/cache"
-PLUGINS_CONFIG="${CLAUDE_DIR}/plugins/config.json"
 
 # --- Colors ---
 RED='\033[0;31m'
@@ -44,56 +43,14 @@ echo -e "${GREEN}✓ Scripts made executable${NC}"
 mkdir -p "$CACHE_DIR"
 echo -e "${GREEN}✓ Cache directory created:${NC} ${CACHE_DIR}"
 
-# --- Register plugin in ~/.claude/plugins/config.json ---
-mkdir -p "${CLAUDE_DIR}/plugins"
+# --- Install command and agent into Claude Code directories ---
+mkdir -p "${CLAUDE_DIR}/commands" "${CLAUDE_DIR}/agents"
 
-if [[ -f "$PLUGINS_CONFIG" ]]; then
-  # Read existing config
-  EXISTING="$(cat "$PLUGINS_CONFIG")"
-else
-  EXISTING='{"plugins":[]}'
-fi
+ln -sf "${PLUGIN_DIR}/commands/video.md" "${CLAUDE_DIR}/commands/video.md"
+echo -e "${GREEN}✓ /video command installed:${NC} ~/.claude/commands/video.md"
 
-# Check if already registered
-if echo "$EXISTING" | grep -q "\"${PLUGIN_DIR}\""; then
-  echo -e "${GREEN}✓ Plugin already registered at:${NC} ${PLUGIN_DIR}"
-else
-  # Use Python to safely update the JSON (available on macOS/Linux by default)
-  python3 - <<PYEOF
-import json, sys
-
-config_path = "${PLUGINS_CONFIG}"
-plugin_dir = "${PLUGIN_DIR}"
-
-try:
-    with open(config_path) as f:
-        config = json.load(f)
-except (FileNotFoundError, json.JSONDecodeError):
-    config = {"plugins": []}
-
-if not isinstance(config.get("plugins"), list):
-    config["plugins"] = []
-
-# Remove any existing entry for this plugin (by path or name)
-config["plugins"] = [
-    p for p in config["plugins"]
-    if p.get("path") != plugin_dir and p.get("name") != "claude-video"
-]
-
-config["plugins"].append({
-    "name": "claude-video",
-    "path": plugin_dir,
-    "enabled": True
-})
-
-with open(config_path, "w") as f:
-    json.dump(config, f, indent=2)
-
-print("registered")
-PYEOF
-
-  echo -e "${GREEN}✓ Plugin registered in:${NC} ${PLUGINS_CONFIG}"
-fi
+ln -sf "${PLUGIN_DIR}/agents/video-analyzer.md" "${CLAUDE_DIR}/agents/video-analyzer.md"
+echo -e "${GREEN}✓ video-analyzer agent installed:${NC} ~/.claude/agents/video-analyzer.md"
 
 echo ""
 echo -e "${GREEN}Installation complete!${NC}"
