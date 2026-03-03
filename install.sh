@@ -39,9 +39,12 @@ chmod +x "${PLUGIN_DIR}/scripts/extract_frames.sh"
 chmod +x "${PLUGIN_DIR}/hooks/session_start.sh"
 echo -e "${GREEN}✓ Scripts made executable${NC}"
 
-# --- Create cache directory ---
+# --- Create cache directory and link script to fixed location ---
 mkdir -p "$CACHE_DIR"
 echo -e "${GREEN}✓ Cache directory created:${NC} ${CACHE_DIR}"
+
+ln -sf "${PLUGIN_DIR}/scripts/extract_frames.sh" "${CLAUDE_DIR}/claude-video/extract_frames.sh"
+echo -e "${GREEN}✓ Script linked:${NC} ~/.claude/claude-video/extract_frames.sh"
 
 # --- Install command and agent into Claude Code directories ---
 mkdir -p "${CLAUDE_DIR}/commands" "${CLAUDE_DIR}/agents"

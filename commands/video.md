@@ -44,7 +44,7 @@ Then stop.
 
 Run the extraction script via Bash, capturing stdout as the cache directory:
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/extract_frames.sh" "<ABS_VIDEO_PATH>"
+bash "${HOME}/.claude/claude-video/extract_frames.sh" "<ABS_VIDEO_PATH>"
 ```
 
 If the exit code is non-zero or stdout is empty, report the error output to the user and stop.
