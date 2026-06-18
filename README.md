@@ -30,7 +30,7 @@ sudo apt install ffmpeg
 ## Installation
 
 ```bash
-git clone https://github.com/yanmastin/claude-video.git ~/Workspace/claude-video
+git clone https://github.com/yanmastin-astro/claude-video.git ~/Workspace/claude-video
 cd ~/Workspace/claude-video && ./install.sh
 ```
 
